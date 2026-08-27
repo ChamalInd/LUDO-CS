@@ -3,7 +3,7 @@
 Player players[NO_OF_PLAYERS];
 GameStatus game_status;
 
-int main() 
+int main(void) 
 {   
     srand(1);
     game_loop();

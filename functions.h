@@ -2,11 +2,14 @@
 #include "types.h"
 
 // helper.c
-int dice_roll();
-void initialize_board();
-void initialize_players();
-void decide_player_order();
-void print_start();
+int dice_roll(void);
+void initialize_board(void);
+void initialize_players(void);
+void decide_player_order(void);
+void print_start(void);
 
 // game.c
-void game_loop();
+void game_loop(void);
+
+// players.c
+void decide_player_actions(void);

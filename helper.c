@@ -4,12 +4,12 @@
 extern Player players[NO_OF_PLAYERS];
 extern GameStatus game_status;
 
-int dice_roll()
+int dice_roll(void)
 {
     return rand() % 6 + 1;
 }
 
-void initialize_board()
+void initialize_board(void)
 {
     game_status = (GameStatus)
     {
@@ -21,7 +21,7 @@ void initialize_board()
 	decide_player_order();
 }
 
-void initialize_players()
+void initialize_players(void)
 {
     char *player_names[NO_OF_PLAYERS] = {"Red", "Green", "Yellow", "Blue"};
     char *piece_names[NO_OF_PLAYERS] = {"R", "G", "Y", "B"};
@@ -46,7 +46,7 @@ void initialize_players()
     }
 }
 
-void decide_player_order()
+void decide_player_order(void)
 {   
     while (TRUE) 
     {
@@ -103,7 +103,7 @@ void decide_player_order()
     }
 }
 
-void print_start()
+void print_start(void)
 {
     printf("-------------------------- LUDO CS --------------------------\n\n");
 
