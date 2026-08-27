@@ -86,6 +86,7 @@ void decide_player_order(void)
         for (int i = 0; i < NO_OF_PLAYERS; i++)
         {
             printf("%s rolls %i.\n", players[i].name, players[i].die_roll);
+            players[i].player_status = IN_GAME;
         }
 
         printf("\n%s player has the highest roll and will begin the game.\n\nThe order of a single round is ", players[place].name);
@@ -119,4 +120,14 @@ void print_start(void)
         }
     }
     printf("\n");
+}
+
+int count_based_pieces(Player player)
+{
+    int count = 0;
+    for (int i = 0; i < NO_OF_PIECES; i++)
+    {
+        if (player.pieces[i].piece_status == OUT_OF_GAME) count++;
+    }
+    return count;
 }
