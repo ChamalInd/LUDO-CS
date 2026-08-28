@@ -3,6 +3,7 @@
 
 // helper.c
 int dice_roll(void);
+void initialize_game(void);
 void initialize_board(void);
 void initialize_players(void);
 void decide_player_order(void);

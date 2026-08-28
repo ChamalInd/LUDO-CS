@@ -6,7 +6,7 @@ extern GameStatus game_status;
 
 void game_loop(void) 
 {
-    initialize_board();
+    initialize_game();
     int count = 0;
     while (count < 100)
     {
