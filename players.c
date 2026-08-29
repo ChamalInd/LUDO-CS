@@ -5,7 +5,7 @@ extern Player players[NO_OF_PLAYERS];
 extern Cell board[NO_OF_CELLS];
 extern GameStatus game_status;
 
-void decide_player_actions(void)
+void decide_player_movement(void)
 {   
     Player *player = &players[game_status.current_player];
     Piece *pieces = player->pieces;

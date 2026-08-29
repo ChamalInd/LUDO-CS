@@ -25,6 +25,14 @@ void initialize_game(void)
 
 void initialize_board(void)
 {
+    for (int i = 0; i < NO_OF_CELLS; i++) 
+    {
+        for (int j = 0; j < NO_OF_PIECES * NO_OF_PLAYERS; j++)
+        {
+            board[i].pieces[j] = (Piece) {};
+        }
+    }
+
     int prev = 0;
     for (int i = 0 ; i < NO_OF_CELLS - 24; i++)
     {

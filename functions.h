@@ -16,4 +16,4 @@ void print_game_over(int winner);
 void game_loop(void);
 
 // players.c
-void decide_player_actions(void);
+void decide_player_movement(void);

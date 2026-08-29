@@ -21,7 +21,7 @@ void game_loop(void)
         players[player].die_roll = dice_roll();
         printf("%s player rolled %i.\n", players[player].name, players[player].die_roll);
 
-        decide_player_actions();
+        decide_player_movement();
 
         if (players[player].die_roll == 6 && players[player].six_counts < 2)
         {
