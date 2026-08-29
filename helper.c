@@ -160,9 +160,42 @@ void decide_player_order(void)
     }
 }
 
+Player_Status calculate_player_status(Player player)
+{
+    Player_Status status;
+    status.based_pieces = status.homed_pieces = status.playing_pieces = 0;
+
+    for (int i = 0; i < NO_OF_PIECES; i++)
+    {
+        if (player.pieces[i].piece_status == IN_BASE) status.based_pieces++;
+        if (player.pieces[i].piece_status == IN_HOME) status.homed_pieces++;
+    }
+    
+    status.playing_pieces = NO_OF_PIECES - status.based_pieces - status.homed_pieces;
+
+    return status;
+}
+
+int decide_winner(void)
+{
+    int winner = NONE;
+
+    for (int i = 0; i < NO_OF_PLAYERS; i++)
+    {
+        Player_Status status = calculate_player_status(players[i]);
+        if (status.homed_pieces == NO_OF_PIECES) 
+        {
+            winner = i; 
+            break;
+        }
+    }
+
+    return winner;
+}
+
 void print_start(void)
 {
-    printf("-------------------------- LUDO CS --------------------------\n\n");
+    printf("----------------------------------------------------------- LUDO CS -----------------------------------------------------------\n\n");
 
     for (int i = 0; i < NO_OF_PLAYERS; i++)
     {
@@ -178,18 +211,8 @@ void print_start(void)
     printf("\n");
 }
 
-Player_Status calculate_player_status(Player player)
+void print_game_over(int winner)
 {
-    Player_Status status;
-    status.based_pieces = status.homed_pieces = status.playing_pieces = 0;
-
-    for (int i = 0; i < NO_OF_PIECES; i++)
-    {
-        if (player.pieces[i].piece_status == IN_BASE) status.based_pieces++;
-        if (player.pieces[i].piece_status == IN_HOME) status.homed_pieces++;
-    }
-    
-    status.playing_pieces = NO_OF_PIECES - status.based_pieces - status.homed_pieces;
-
-    return status;
+    printf("---------------------------------------------------------- Game Over ----------------------------------------------------------\n\n");
+    printf("%s player wins!!!\n", players[winner].name);
 }

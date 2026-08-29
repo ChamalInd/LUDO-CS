@@ -9,6 +9,7 @@
 
 #define TRUE          1
 #define FALSE         0
+#define NONE         -1
 #define NO_OF_PLAYERS 4
 #define NO_OF_PIECES  4
 #define NO_OF_CELLS  76
