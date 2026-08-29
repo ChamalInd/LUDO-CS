@@ -54,7 +54,9 @@ typedef struct
 // Data structures of game
 typedef struct 
 {
+    int starting_player;
     int current_player;
+    int round_count;
 } GameStatus;
 
 // Data structures of board

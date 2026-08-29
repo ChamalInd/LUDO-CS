@@ -7,17 +7,22 @@ extern GameStatus game_status;
 void game_loop(void) 
 {
     initialize_game();
-    int count = 0;
-    while (count < 1000)
+    while (TRUE)
     {
         int winner = decide_winner();
+        int player = game_status.current_player;
 
         if (winner != NONE) {
-            print_game_over(winner);
+            printf("%s player wins!!!\n", players[winner].name);
             break;
         }
 
-        int player = game_status.current_player;
+        if (game_status.current_player == game_status.starting_player && players[player].six_counts == 0)
+        {
+            game_status.round_count++;
+            print_game_round();
+        }
+
         players[player].die_roll = dice_roll();
         printf("%s player rolled %i.\n", players[player].name, players[player].die_roll);
 
@@ -33,7 +38,5 @@ void game_loop(void)
             game_status.current_player = (player + 1) % NO_OF_PLAYERS;
             players[player].six_counts = 0;
         }
-
-        count++;
     }
 }

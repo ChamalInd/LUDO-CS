@@ -14,7 +14,9 @@ void initialize_game(void)
 {
     game_status = (GameStatus)
     {
-        .current_player = 0
+        .starting_player = NONE,
+        .current_player = NONE,
+        .round_count = 0
     };
 
     initialize_players();
@@ -147,6 +149,8 @@ void decide_player_order(void)
             return decide_player_order();
         }
         game_status.current_player = place;
+        game_status.starting_player = place;
+
 
         for (int i = 0; i < NO_OF_PLAYERS; i++)
         {
@@ -220,8 +224,26 @@ void print_start(void)
     printf("\n");
 }
 
-void print_game_over(int winner)
+void print_game_round(void)
 {
-    printf("---------------------------------------------------------- Game Over ----------------------------------------------------------\n\n");
-    printf("%s player wins!!!\n", players[winner].name);
+    
+    printf("----------------------------------------------------------- Round %2i -----------------------------------------------------------\n\n", game_status.round_count);
+    for (int i = 0; i < NO_OF_PLAYERS; i++)
+    {
+        Player_Status status = calculate_player_status(players[i]);
+        printf("%s player now has %i/%i pieces on the board and %i/%i pieces on the base.\n", players[i].name, (NO_OF_PIECES - status.based_pieces), NO_OF_PIECES, status.based_pieces, NO_OF_PIECES);
+        printf("Locations of Pieces of %s player : \n", players[i].name);
+        for (int j = 0; j < NO_OF_PIECES; j++)
+        {
+            char *place;
+
+            if (players[i].pieces[j].place == HOME) place = "Home";
+            else if (players[i].pieces[j].place == BASE) place = "Base";
+            else place = board[players[i].pieces[j].place].name;
+
+            printf("\t%s : %s\n", players[i].pieces[j].name, place);
+            
+        }
+        printf("\n");
+    }
 }

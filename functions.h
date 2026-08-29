@@ -10,7 +10,7 @@ void decide_player_order(void);
 Player_Status calculate_player_status(Player player);
 int decide_winner(void);
 void print_start(void);
-void print_game_over(int winner);
+void print_game_round(void);
 
 // game.c
 void game_loop(void);
