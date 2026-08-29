@@ -86,6 +86,7 @@ void initialize_players(void)
             .name = player_names[i],
             .player_status = OUT_OF_GAME,
             .die_roll = 0,
+            .six_counts = 0,
             .x_marked_cell = x_marked_cells[i],
             .colored_circle = colored_circle_cells[i],
             .home_path_begin_cell = home_path_cells[i]

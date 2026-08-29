@@ -44,6 +44,7 @@ typedef struct
     char *name;
     Status player_status;
     int die_roll;
+    int six_counts;
     int x_marked_cell;
     int colored_circle;
     int home_path_begin_cell;

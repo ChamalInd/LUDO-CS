@@ -23,7 +23,17 @@ void game_loop(void)
 
         decide_player_actions();
 
-        game_status.current_player = (player + 1) % NO_OF_PLAYERS;
+        if (players[player].die_roll == 6 && players[player].six_counts < 2)
+        {
+            game_status.current_player = player;
+            players[player].six_counts++;
+        }
+        else
+        {
+            game_status.current_player = (player + 1) % NO_OF_PLAYERS;
+            players[player].six_counts = 0;
+        }
+
         count++;
     }
 }
