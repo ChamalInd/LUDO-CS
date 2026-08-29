@@ -8,7 +8,7 @@ void game_loop(void)
 {
     initialize_game();
     int count = 0;
-    while (count < 100)
+    while (count < 1000)
     {
         int player = game_status.current_player;
         players[player].die_roll = dice_roll();
@@ -18,5 +18,21 @@ void game_loop(void)
 
         game_status.current_player = (player + 1) % NO_OF_PLAYERS;
         count++;
+
+        int game_over = TRUE;
+        for (int i = 0; i < NO_OF_PLAYERS; i++)
+        {
+            Player_Status status = calculate_player_status(players[i]);
+            if (status.homed_pieces < NO_OF_PIECES)
+            {
+                game_over = FALSE;
+                break;
+            }
+        }
+
+        if (game_over) {
+            printf("Game Over\n");
+            break;
+        }
     }
 }

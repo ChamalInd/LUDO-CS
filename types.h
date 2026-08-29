@@ -5,17 +5,18 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define TRUE          1
 #define FALSE         0
 #define NO_OF_PLAYERS 4
 #define NO_OF_PIECES  4
-#define NO_OF_CELLS  72
+#define NO_OF_CELLS  76
 
 // Data structures of pieces
 typedef enum 
 {
-    OUT_OF_GAME, IN_GAME, PLAYING
+    OUT_OF_GAME, IN_BASE, IN_HOME, PLAYING, IN_HOME_PATH
 } Status;
 
 typedef enum{
@@ -32,12 +33,20 @@ typedef struct
 // Data structures of players
 typedef struct 
 {
+    int based_pieces;
+    int homed_pieces;
+    int playing_pieces;
+} Player_Status;
+
+typedef struct 
+{
     char *name;
     Status player_status;
     int die_roll;
     int x_marked_cell;
     int colored_circle;
-    Piece pieces[4];
+    int home_path_begin_cell;
+    Piece pieces[NO_OF_PIECES];
 } Player;
 
 // Data structures of game
@@ -55,7 +64,8 @@ typedef enum
 typedef struct 
 {
     int id;
-    Piece pieces[16];
+    char name[20];
+    Piece pieces[NO_OF_PIECES * NO_OF_PLAYERS];
     Type cell_type;
 } Cell;
 

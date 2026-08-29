@@ -26,7 +26,7 @@ void initialize_game(void)
 void initialize_board(void)
 {
     int prev = 0;
-    for (int i = 0 ; i < NO_OF_CELLS - 20; i++)
+    for (int i = 0 ; i < NO_OF_CELLS - 24; i++)
     {
         if (i % 13 == 0)
         {
@@ -35,21 +35,49 @@ void initialize_board(void)
         }
         else if ((i - prev) % 11 == 0) board[i].cell_type = COLORED_CIRCLE;
         else board[i].cell_type = STANDARD;
+        board[i].id = i;
+        snprintf(board[i].name, sizeof(board[i].name), "%i", i);
     }
 
     // Color specific cells;
-    for (int i = NO_OF_CELLS - 20; i < NO_OF_CELLS - 15; i++) board[i].cell_type = COLOR_SPECIFIC_RED;
-    for (int i = NO_OF_CELLS - 15; i < NO_OF_CELLS - 10; i++) board[i].cell_type = COLOR_SPECIFIC_YELLOW;
-    for (int i = NO_OF_CELLS - 10; i < NO_OF_CELLS - 5; i++) board[i].cell_type = COLOR_SPECIFIC_GREEN;
-    for (int i = NO_OF_CELLS - 5; i < NO_OF_CELLS; i++) board[i].cell_type = COLOR_SPECIFIC_BLUE;
+    for (int i = NO_OF_CELLS - 24; i < NO_OF_CELLS - 18; i++) 
+    {
+        board[i].cell_type = COLOR_SPECIFIC_GREEN;
+        board[i].id = i;
+        if (i == NO_OF_CELLS - 19) strcpy(board[i].name, "GreenHome");
+        else snprintf(board[i].name, sizeof(board[i].name), "GreenHomePath%i", i % (NO_OF_CELLS - 24));
+
+    }
+    for (int i = NO_OF_CELLS - 18; i < NO_OF_CELLS - 12; i++) 
+    {
+        board[i].cell_type = COLOR_SPECIFIC_YELLOW;
+        board[i].id = i;
+        if (i == NO_OF_CELLS - 13) strcpy(board[i].name, "YellowHome");
+        else snprintf(board[i].name, sizeof(board[i].name), "YellowHomePath%i", i % (NO_OF_CELLS - 18));
+    }
+    for (int i = NO_OF_CELLS - 12; i < NO_OF_CELLS - 6; i++) 
+    {
+        board[i].cell_type = COLOR_SPECIFIC_BLUE;
+        board[i].id = i;
+        if (i == NO_OF_CELLS - 7) strcpy(board[i].name, "BlueHome");
+        else snprintf(board[i].name, sizeof(board[i].name), "BlueHomePath%i", i % (NO_OF_CELLS - 12));
+    }
+    for (int i = NO_OF_CELLS - 6; i < NO_OF_CELLS; i++) 
+    {
+        board[i].cell_type = COLOR_SPECIFIC_RED;
+        board[i].id = i;
+        if (i == NO_OF_CELLS - 1) strcpy(board[i].name, "RedHome");
+        else snprintf(board[i].name, sizeof(board[i].name), "RedHomePath%i", i % (NO_OF_CELLS - 6));
+    }
 }
 
 void initialize_players(void)
 {
-    char *player_names[NO_OF_PLAYERS] = {"Red", "Green", "Yellow", "Blue"};
-    char *piece_names[NO_OF_PLAYERS] = {"R", "G", "Y", "B"};
-    int x_marked_cells[NO_OF_PLAYERS] = {0, 13, 26, 39};
-    int colored_circle_cells[NO_OF_PLAYERS] = {11, 24, 37, 50};
+    char *player_names[] = {"Red", "Green", "Yellow", "Blue"};
+    char *piece_names[] = {"R", "G", "Y", "B"};
+    int x_marked_cells[] = {39, 0, 13, 26};
+    int colored_circle_cells[] = {37, 50, 11, 24};
+    int home_path_cells[] = {70, 52, 58, 64};
 
     for (int i = 0; i < NO_OF_PLAYERS; i++) 
     {
@@ -59,16 +87,17 @@ void initialize_players(void)
             .player_status = OUT_OF_GAME,
             .die_roll = 0,
             .x_marked_cell = x_marked_cells[i],
-            .colored_circle = colored_circle_cells[i]
+            .colored_circle = colored_circle_cells[i],
+            .home_path_begin_cell = home_path_cells[i]
         };
 
         char *piece_specifier = piece_names[i];
 
-        for (int j = 0; j < NO_OF_PLAYERS; j++) 
+        for (int j = 0; j < NO_OF_PIECES; j++) 
         {
             snprintf(players[i].pieces[j].name, sizeof(players[i].pieces[j].name), "%s%i", piece_specifier, j + 1);
             players[i].pieces[j].place = BASE;
-            players[i].pieces[j].piece_status = OUT_OF_GAME;
+            players[i].pieces[j].piece_status = IN_BASE;
         }
     }
 }
@@ -113,17 +142,17 @@ void decide_player_order(void)
         for (int i = 0; i < NO_OF_PLAYERS; i++)
         {
             printf("%s rolls %i.\n", players[i].name, players[i].die_roll);
-            players[i].player_status = IN_GAME;
+            players[i].player_status = PLAYING;
         }
 
         printf("\n%s player has the highest roll and will begin the game.\n\nThe order of a single round is ", players[place].name);
 
         count = 0;
-        while (count < 4)
+        while (count < NO_OF_PLAYERS)
         {
             printf("%s", players[(place + count) % NO_OF_PLAYERS].name);
             if (count == (NO_OF_PLAYERS - 2)) printf(", and ");
-            else if (count == (NO_OF_PLAYERS - 1)) printf("\n");
+            else if (count == (NO_OF_PLAYERS - 1)) printf(".\n\n");
             else printf(", ");
             count++;
         }
@@ -141,20 +170,26 @@ void print_start(void)
         for (int j = 0; j < NO_OF_PIECES; j++)
         {
             printf("%s", players[i].pieces[j].name);
-            if (j == (NO_OF_PIECES - 1)) printf("\n");
-            else if (j == (NO_OF_PIECES - 2)) printf(", and");
+            if (j == (NO_OF_PIECES - 1)) printf(".\n");
+            else if (j == (NO_OF_PIECES - 2)) printf(", and ");
             else printf(", ");
         }
     }
     printf("\n");
 }
 
-int count_based_pieces(Player player)
+Player_Status calculate_player_status(Player player)
 {
-    int count = 0;
+    Player_Status status;
+    status.based_pieces = status.homed_pieces = status.playing_pieces = 0;
+
     for (int i = 0; i < NO_OF_PIECES; i++)
     {
-        if (player.pieces[i].piece_status == OUT_OF_GAME) count++;
+        if (player.pieces[i].piece_status == IN_BASE) status.based_pieces++;
+        if (player.pieces[i].piece_status == IN_HOME) status.homed_pieces++;
     }
-    return count;
+    
+    status.playing_pieces = NO_OF_PIECES - status.based_pieces - status.homed_pieces;
+
+    return status;
 }
