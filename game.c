@@ -1,9 +1,6 @@
 // Declare game loop
 #include "functions.h"
 
-extern Player players[NO_OF_PLAYERS];
-extern GameStatus game_status;
-
 void game_loop(void) 
 {
     initialize_game();

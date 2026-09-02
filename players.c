@@ -1,10 +1,6 @@
 // Define player behaviors
 #include "functions.h"
 
-extern Player players[NO_OF_PLAYERS];
-extern Cell board[NO_OF_CELLS];
-extern GameStatus game_status;
-
 void decide_player_movement(void)
 {   
     Player *player = &players[game_status.current_player];
@@ -89,3 +85,4 @@ void decide_player_movement(void)
     }
     else printf("%s has no place to move.\n\n", player->name);
 }
+

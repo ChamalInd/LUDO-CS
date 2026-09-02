@@ -1,10 +1,6 @@
 // Declare all the helper functions
 #include "functions.h"
 
-extern Player players[NO_OF_PLAYERS];
-extern Cell board[NO_OF_CELLS];
-extern GameStatus game_status;
-
 int dice_roll(void)
 {
     return rand() % 6 + 1;

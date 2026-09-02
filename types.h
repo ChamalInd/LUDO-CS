@@ -14,6 +14,10 @@
 #define NO_OF_PIECES  4
 #define NO_OF_CELLS  76
 
+extern Player players[NO_OF_PLAYERS];
+extern Cell board[NO_OF_CELLS];
+extern GameStatus game_status;
+
 // Data structures of pieces
 typedef enum 
 {
