@@ -15,16 +15,13 @@ void decide_player_movement(void)
             if (pieces[piece].piece_status == IN_BASE) break;
             piece++;
         }
-        printf("%s player moves piece %s to the starting point.\n", player->name, pieces[piece].name);
-        pieces[piece].piece_status = PLAYING;
-        pieces[piece].place = player->x_marked_cell;
-        status.based_pieces--;
-        printf("%s player now has %i/%i pieces on board and %i/%i pieces on base.\n\n", player->name, NO_OF_PIECES - status.based_pieces, NO_OF_PIECES, status.based_pieces, NO_OF_PIECES);
+        
+        move_from_base_to_board(player, &pieces[piece], status);
         capture_players(pieces[piece]);
     }
     else if (status.playing_pieces > 0) // moving other pieces
     {
-        int next_location = 0, tries = 0, piece;
+        int tries = 0, piece;
 
         while (TRUE)
         {
@@ -36,26 +33,7 @@ void decide_player_movement(void)
 
             if (pieces[piece].piece_status == PLAYING)
             {
-                int i = pieces[piece].place;
-                while (TRUE)
-                {
-                    if (board[i].id == player->colored_circle)
-                    {
-                        next_location = player->home_path_begin_cell + pieces[piece].place + player->die_roll - i - 1;
-                        printf("%s moves piece %s from %s to %s by %i units in clockwise direction.\n\n", player->name, pieces[piece].name, board[pieces[piece].place].name, board[next_location].name, player->die_roll);
-                        pieces[piece].place = next_location;
-                        pieces[piece].piece_status = IN_HOME_PATH;
-                        break;
-                    }
-                    i = (i + 1) % (NO_OF_CELLS - 24);
-                    if (i == ((pieces[piece].place + player->die_roll) % (NO_OF_CELLS - 24))) break;
-                }
-                if (pieces[piece].piece_status == PLAYING) 
-                {
-                    next_location = (player->pieces[piece].place + player->die_roll) % (NO_OF_CELLS - 24);
-                    printf("%s moves piece %s from %s to %s by %i units in clockwise direction.\n\n", player->name, pieces[piece].name, board[pieces[piece].place].name, board[next_location].name, player->die_roll);
-                    pieces[piece].place = next_location;
-                }
+                move_inside_board(player, &pieces[piece]);
                 capture_players(pieces[piece]);
                 break;
             }
@@ -63,17 +41,7 @@ void decide_player_movement(void)
             {
                 if (player->die_roll <= ((player->home_path_begin_cell + 5) - pieces[piece].place))
                 {
-                    next_location = player->pieces[piece].place + player->die_roll;
-                    printf("%s moves piece %s from %s to %s by %i units in clockwise direction.\n\n", player->name, pieces[piece].name, board[pieces[piece].place].name, board[next_location].name, player->die_roll);
-                    strcpy(board[pieces[piece].place].piece_name, "");
-                    pieces[piece].place = next_location;
-                    strcpy(board[pieces[piece].place].piece_name, pieces[piece].name);
-
-                    if (pieces[piece].place == player->home_path_begin_cell + 5)
-                    {
-                        pieces[piece].piece_status = IN_HOME;
-                        pieces[piece].place = HOME;
-                    }
+                    move_in_home_path(player, &pieces[piece]);
                     break;
                 }
             }
@@ -88,6 +56,53 @@ void decide_player_movement(void)
         }
     }
     else printf("%s has no place to move.\n\n", player->name);
+}
+
+void move_from_base_to_board(Player *player, Piece *piece, Player_Status status)
+{
+    piece->piece_status = PLAYING;
+    piece->place = player->x_marked_cell;
+    status.based_pieces--;
+    print_movements(1, *player, *piece, NO_OF_PIECES - status.based_pieces, status.based_pieces, NO_OF_PIECES, NONE);
+}
+
+void move_inside_board(Player *player, Piece *piece)
+{   
+    int next_location = 0;
+    int i = piece->place;
+
+    while (TRUE)
+    {
+        if (board[i].id == player->colored_circle)
+        {
+            next_location = player->home_path_begin_cell + piece->place + player->die_roll - i - 1;
+            print_movements(2, *player, *piece, NONE, NONE, NONE, next_location);
+            piece->place = next_location;
+            piece->piece_status = IN_HOME_PATH;
+            break;
+        }
+        i = (i + 1) % (NO_OF_CELLS - 24);
+        if (i == ((piece->place + player->die_roll) % (NO_OF_CELLS - 24))) break;
+    }
+    if (piece->piece_status == PLAYING) 
+    {
+        next_location = (piece->place + player->die_roll) % (NO_OF_CELLS - 24);
+        print_movements(2, *player, *piece, NONE, NONE, NONE, next_location);
+        piece->place = next_location;
+    }
+}
+
+void move_in_home_path(Player *player, Piece *piece)
+{
+    int next_location = piece->place + player->die_roll;
+    print_movements(2, *player, *piece, NONE, NONE, NONE, next_location);
+    piece->place = next_location;
+
+    if (piece->place == player->home_path_begin_cell + 5)
+    {
+        piece->piece_status = IN_HOME;
+        piece->place = HOME;
+    }
 }
 
 void capture_players(Piece current_piece)

@@ -35,7 +35,6 @@ void initialize_board(void)
         else board[i].cell_type = STANDARD;
         board[i].id = i;
         snprintf(board[i].name, sizeof(board[i].name), "%i", i);
-        strcpy(board[i].piece_name, "");
     }
 
     // Color specific cells;
@@ -235,4 +234,23 @@ void print_game_round(void)
         }
         printf("\n");
     }
+}
+
+void print_movements(int situation, Player player, Piece piece, int playing_count, int based_count, int total_pieces, int next_location)
+{
+    switch (situation)
+    {
+        case 1 :
+        {
+            printf("%s player moves piece %s to the starting point.\n", player.name, piece.name);
+            printf("%s player now has %i/%i pieces on board and %i/%i pieces on base.\n\n", player.name, playing_count, total_pieces, based_count, total_pieces);
+            break;
+        }
+        case 2 :
+        {
+            printf("%s moves piece %s from %s to %s by %i units in clockwise direction.\n\n", player.name, piece.name, board[piece.place].name, board[next_location].name, player.die_roll);
+            break;
+        }
+    }
+
 }

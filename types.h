@@ -69,7 +69,6 @@ typedef struct
 {
     int id;
     char name[20];
-    char piece_name[3];
     Type cell_type;
 } Cell;
 
