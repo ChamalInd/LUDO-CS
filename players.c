@@ -86,7 +86,14 @@ void move_inside_board(Player *player, Piece *piece)
     }
     if (piece->piece_status == PLAYING) 
     {
-        next_location = (piece->place + player->die_roll) % (NO_OF_CELLS - 24);
+        if (piece->direction == CLOCKWISE)
+        {
+            next_location = (piece->place + player->die_roll) % (NO_OF_CELLS - 24);
+        }
+        else
+        {
+            next_location = (piece->place - player->die_roll) % (NO_OF_CELLS - 24);
+        }
         print_movements(2, *player, *piece, NONE, NONE, NONE, next_location);
         piece->place = next_location;
     }

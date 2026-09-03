@@ -97,6 +97,7 @@ void initialize_players(void)
             snprintf(players[i].pieces[j].name, sizeof(players[i].pieces[j].name), "%s%i", piece_specifier, j + 1);
             players[i].pieces[j].place = BASE;
             players[i].pieces[j].piece_status = IN_BASE;
+            players[i].pieces[j].direction = CLOCKWISE;
         }
     }
 }
@@ -248,7 +249,10 @@ void print_movements(int situation, Player player, Piece piece, int playing_coun
         }
         case 2 :
         {
-            printf("%s moves piece %s from %s to %s by %i units in clockwise direction.\n\n", player.name, piece.name, board[piece.place].name, board[next_location].name, player.die_roll);
+            char *direction;
+            if (piece.direction == CLOCKWISE) direction = "clockwise";
+            else direction = "anti-clockwise";
+            printf("%s moves piece %s from %s to %s by %i units in %s direction.\n\n", player.name, piece.name, board[piece.place].name, board[next_location].name, player.die_roll, direction);
             break;
         }
     }

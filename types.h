@@ -20,14 +20,21 @@ typedef enum
     OUT_OF_GAME, IN_BASE, IN_HOME, PLAYING, IN_HOME_PATH
 } Status;
 
-typedef enum{
+typedef enum
+{
     BASE = -2, HOME
 } Place;
+
+typedef enum 
+{
+    CLOCKWISE, ANTI_CLOCKWISE
+} Direction;
 
 typedef struct 
 {
     char name[3];
     int place;
+    Direction direction;
     Status piece_status;
 } Piece;
 
