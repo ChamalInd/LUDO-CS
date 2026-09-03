@@ -20,6 +20,7 @@ void decide_player_movement(void)
         pieces[piece].place = player->x_marked_cell;
         status.based_pieces--;
         printf("%s player now has %i/%i pieces on board and %i/%i pieces on base.\n\n", player->name, NO_OF_PIECES - status.based_pieces, NO_OF_PIECES, status.based_pieces, NO_OF_PIECES);
+        capture_players(pieces[piece]);
     }
     else if (status.playing_pieces > 0) // moving other pieces
     {
@@ -55,6 +56,7 @@ void decide_player_movement(void)
                     printf("%s moves piece %s from %s to %s by %i units in clockwise direction.\n\n", player->name, pieces[piece].name, board[pieces[piece].place].name, board[next_location].name, player->die_roll);
                     pieces[piece].place = next_location;
                 }
+                capture_players(pieces[piece]);
                 break;
             }
             else if (pieces[piece].piece_status == IN_HOME_PATH)
@@ -63,7 +65,9 @@ void decide_player_movement(void)
                 {
                     next_location = player->pieces[piece].place + player->die_roll;
                     printf("%s moves piece %s from %s to %s by %i units in clockwise direction.\n\n", player->name, pieces[piece].name, board[pieces[piece].place].name, board[next_location].name, player->die_roll);
+                    strcpy(board[pieces[piece].place].piece_name, "");
                     pieces[piece].place = next_location;
+                    strcpy(board[pieces[piece].place].piece_name, pieces[piece].name);
 
                     if (pieces[piece].place == player->home_path_begin_cell + 5)
                     {
@@ -86,3 +90,20 @@ void decide_player_movement(void)
     else printf("%s has no place to move.\n\n", player->name);
 }
 
+void capture_players(Piece current_piece)
+{
+    for (int i = 0; i < NO_OF_PLAYERS; i++)
+    {
+        if (game_status.current_player == i) continue;
+        for (int j = 0; j < NO_OF_PIECES; j++)
+        {
+            if (players[i].pieces[j].piece_status == PLAYING && players[i].pieces[j].place == current_piece.place)
+            {
+                players[i].pieces[j].place = BASE;
+                players[i].pieces[j].piece_status = IN_BASE;
+                printf("%s player's piece %s, captured %s.\n", players[game_status.current_player].name, current_piece.name, players[i].pieces[j].name);
+                printf("Piece %s returned to Base.\n\n", players[i].pieces[j].name);
+            }
+        }
+    }
+}

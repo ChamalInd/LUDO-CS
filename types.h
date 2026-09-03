@@ -14,10 +14,6 @@
 #define NO_OF_PIECES  4
 #define NO_OF_CELLS  76
 
-extern Player players[NO_OF_PLAYERS];
-extern Cell board[NO_OF_CELLS];
-extern GameStatus game_status;
-
 // Data structures of pieces
 typedef enum 
 {
@@ -73,8 +69,14 @@ typedef struct
 {
     int id;
     char name[20];
-    Piece pieces[NO_OF_PIECES * NO_OF_PLAYERS];
+    char piece_name[3];
     Type cell_type;
 } Cell;
+
+
+// Declaring extern variables
+extern Player players[NO_OF_PLAYERS];
+extern Cell board[NO_OF_CELLS];
+extern GameStatus game_status;
 
 #endif

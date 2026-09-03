@@ -17,3 +17,4 @@ void game_loop(void);
 
 // players.c
 void decide_player_movement(void);
+void capture_players(Piece current_piece);
