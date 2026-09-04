@@ -17,7 +17,7 @@
 // Data structures of pieces
 typedef enum 
 {
-    OUT_OF_GAME, IN_BASE, IN_HOME, PLAYING, IN_HOME_PATH
+    OUT_OF_GAME, IN_BASE, IN_HOME, PLAYING, IN_HOME_PATH, FINISHED
 } Status;
 
 typedef enum
@@ -63,7 +63,10 @@ typedef struct
 {
     int starting_player;
     int current_player;
+    int turn_count;
     int round_count;
+    int win_order[NO_OF_PLAYERS];
+    int no_of_winners;
 } GameStatus;
 
 // Data structures of board

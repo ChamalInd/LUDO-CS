@@ -12,8 +12,15 @@ void initialize_game(void)
     {
         .starting_player = NONE,
         .current_player = NONE,
-        .round_count = 0
+        .turn_count = 0,
+        .round_count = 0,
+        .no_of_winners = 0
     };
+
+    for (int i = 0; i < NO_OF_PLAYERS; i++) 
+    {
+        game_status.win_order[i] = NONE;
+    }
 
     initialize_players();
     initialize_board();
@@ -178,26 +185,26 @@ Player_Status calculate_player_status(Player player)
     return status;
 }
 
-int decide_winner(void)
+void decide_winner(void)
 {
-    int winner = NONE;
-
     for (int i = 0; i < NO_OF_PLAYERS; i++)
     {
+        if (players[i].player_status == FINISHED) continue;
         Player_Status status = calculate_player_status(players[i]);
         if (status.homed_pieces == NO_OF_PIECES) 
         {
-            winner = i; 
+            game_status.win_order[game_status.no_of_winners++] = i;
+            players[i].player_status = FINISHED;
             break;
         }
     }
-
-    return winner;
 }
 
 void print_start(void)
 {
-    printf("----------------------------------------------------------- LUDO CS -----------------------------------------------------------\n\n");
+    printf("===========================================================\n");
+    printf("%33s\n", "LUDO CS");
+    printf("===========================================================\n");
 
     for (int i = 0; i < NO_OF_PLAYERS; i++)
     {
@@ -215,8 +222,9 @@ void print_start(void)
 
 void print_game_round(void)
 {
-    
-    printf("----------------------------------------------------------- Round %2i -----------------------------------------------------------\n\n", game_status.round_count);
+    printf("===========================================================\n");
+    printf("%33s%2i\n", "Round ", game_status.round_count);
+    printf("===========================================================\n");
     for (int i = 0; i < NO_OF_PLAYERS; i++)
     {
         Player_Status status = calculate_player_status(players[i]);
@@ -237,10 +245,31 @@ void print_game_round(void)
     }
 }
 
+void print_game_over(void)
+{
+    printf("===========================================================\n");
+    printf("%30s\n", "Game Over");
+    printf("===========================================================\n");
+    printf("Winner is %s!!\n\nFinish Order : ", players[game_status.win_order[0]].name);
+
+    for(int i = 0; i < NO_OF_PLAYERS; i++)
+    {
+        printf("%s", players[game_status.win_order[i]].name);
+        if (i == (NO_OF_PLAYERS - 1)) printf(".\n");
+        else printf(", ");
+        
+    }
+}
+
 void print_movements(int situation, Player player, Piece piece, int playing_count, int based_count, int total_pieces, int next_location)
 {
     switch (situation)
     {
+        case 0 :
+        {
+            printf("%s player rolled %i.\n", player.name, player.die_roll);
+            break;
+        }
         case 1 :
         {
             printf("%s player moves piece %s to the starting point.\n", player.name, piece.name);

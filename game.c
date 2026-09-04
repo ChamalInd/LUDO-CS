@@ -6,22 +6,34 @@ void game_loop(void)
     initialize_game();
     while (TRUE)
     {
-        int winner = decide_winner();
         int player = game_status.current_player;
+        decide_winner();
 
-        if (winner != NONE) {
-            printf("%s player wins!!!\n", players[winner].name);
+        if (game_status.no_of_winners == NO_OF_PLAYERS) {
+            print_game_over();
             break;
         }
 
-        if (game_status.current_player == game_status.starting_player && players[player].six_counts == 0)
+        if (players[player].player_status == FINISHED) 
         {
-            game_status.round_count++;
-            print_game_round();
+            game_status.current_player = (player + 1) % NO_OF_PLAYERS;
+            game_status.turn_count++;
+            continue;
+        }        
+
+        if (players[player].six_counts == 0)
+        {
+            game_status.turn_count++;
+            if (game_status.round_count == 0 || game_status.turn_count >= NO_OF_PLAYERS)
+            {
+                game_status.round_count++;
+                game_status.turn_count = 0;
+                print_game_round();
+            }
         }
 
         players[player].die_roll = dice_roll();
-        printf("%s player rolled %i.\n", players[player].name, players[player].die_roll);
+        print_movements(0, players[player], players[player].pieces[0], NONE, NONE, NONE, NONE);
 
         decide_player_movement();
 

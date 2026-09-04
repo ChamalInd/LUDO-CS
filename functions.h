@@ -8,9 +8,10 @@ void initialize_board(void);
 void initialize_players(void);
 void decide_player_order(void);
 Player_Status calculate_player_status(Player player);
-int decide_winner(void);
+void decide_winner(void);
 void print_start(void);
 void print_game_round(void);
+void print_game_over(void);
 void print_movements(int situation, Player player, Piece piece, int playing_count, int based_count, int total_pieces, int next_location);
 
 // game.c
