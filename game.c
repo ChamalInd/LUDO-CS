@@ -34,8 +34,14 @@ void game_loop(void)
 
         players[player].die_roll = dice_roll();
         print_movements(0, players[player], players[player].pieces[0], NONE, NONE, NONE, NONE);
-
-        decide_player_movement();
+        if (players[player].die_roll == 6 && players[player].six_counts == 2)
+        {
+            printf("Turn ignored.\n");
+        }
+        else
+        {
+            decide_player_movement();
+        }
 
         if (players[player].die_roll == 6 && players[player].six_counts < 2)
         {

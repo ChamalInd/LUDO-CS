@@ -28,7 +28,22 @@ void decide_player_movement(void)
             while (TRUE)
             {
                 piece = rand() % NO_OF_PIECES;
-                if (pieces[piece].piece_status == PLAYING || pieces[piece].piece_status == IN_HOME_PATH) break;
+                if (pieces[piece].piece_status == PLAYING || pieces[piece].piece_status == IN_HOME_PATH)
+                {
+                    int safe = TRUE;
+
+                    for (int i = 0; i < NO_OF_PIECES; i++)
+                    {
+                        if (i == piece) continue;
+                        if (pieces[i].place == ((pieces[piece].place + player->die_roll) % (NO_OF_CELLS - 24)))
+                        {
+                            safe = FALSE;
+                            break;
+                        }
+                    }
+
+                    if (safe) break;
+                }
             }
 
             if (pieces[piece].piece_status == PLAYING)
