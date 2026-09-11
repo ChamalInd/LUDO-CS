@@ -112,6 +112,11 @@ void move_inside_board(Player *player, Piece *piece)
         print_movements(2, *player, *piece, NONE, NONE, NONE, next_location);
         piece->place = next_location;
     }
+
+    if (piece->place == player->home_path_begin_cell + 5)
+    {
+        piece->piece_status = IN_HOME;
+    }
 }
 
 void move_in_home_path(Player *player, Piece *piece)
@@ -123,8 +128,8 @@ void move_in_home_path(Player *player, Piece *piece)
     if (piece->place == player->home_path_begin_cell + 5)
     {
         piece->piece_status = IN_HOME;
-        piece->place = HOME;
     }
+
 }
 
 void capture_players(Piece current_piece)

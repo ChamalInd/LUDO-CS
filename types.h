@@ -10,6 +10,7 @@
 #define TRUE          1
 #define FALSE         0
 #define NONE         -1
+#define BASE         -1
 #define NO_OF_PLAYERS 4
 #define NO_OF_PIECES  4
 #define NO_OF_CELLS  76
@@ -19,11 +20,6 @@ typedef enum
 {
     OUT_OF_GAME, IN_BASE, IN_HOME, PLAYING, IN_HOME_PATH, FINISHED
 } Status;
-
-typedef enum
-{
-    BASE = -2, HOME
-} Place;
 
 typedef enum 
 {

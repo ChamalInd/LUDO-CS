@@ -195,7 +195,6 @@ void decide_winner(void)
         {
             game_status.win_order[game_status.no_of_winners++] = i;
             players[i].player_status = FINISHED;
-            break;
         }
     }
 }
@@ -234,7 +233,7 @@ void print_game_round(void)
         {
             char *place;
 
-            if (players[i].pieces[j].place == HOME) place = "Home";
+            if (players[i].pieces[j].piece_status == IN_HOME) place = "Home";
             else if (players[i].pieces[j].place == BASE) place = "Base";
             else place = board[players[i].pieces[j].place].name;
 
