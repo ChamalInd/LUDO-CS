@@ -6,7 +6,7 @@ GameStatus game_status;
 
 int main(void) 
 {   
-    int key = time(NULL);
+    int key = 1; //time(NULL);
     printf("Key : %i\n", key);
     srand(key);
     game_loop();

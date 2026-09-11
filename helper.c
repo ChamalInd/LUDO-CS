@@ -6,6 +6,11 @@ int dice_roll(void)
     return rand() % 6 + 1;
 }
 
+int coin_toss(void)
+{
+    return rand() % 2;
+}
+
 void initialize_game(void)
 {
     game_status = (GameStatus)
@@ -279,7 +284,7 @@ void print_movements(int situation, Player player, Piece piece, int playing_coun
         {
             char *direction;
             if (piece.direction == CLOCKWISE) direction = "clockwise";
-            else direction = "anti-clockwise";
+            else direction = "counter-clockwise";
             printf("%s moves piece %s from %s to %s by %i units in %s direction.\n\n", player.name, piece.name, board[piece.place].name, board[next_location].name, player.die_roll, direction);
             break;
         }
