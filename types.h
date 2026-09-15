@@ -13,8 +13,8 @@
 #define TAIL          0
 #define NONE         -1
 #define BASE         -1
-#define NO_OF_PLAYERS 1
-#define NO_OF_PIECES  1
+#define NO_OF_PLAYERS 4
+#define NO_OF_PIECES  4
 #define NO_OF_CELLS  76
 
 // Data structures of pieces
@@ -32,6 +32,7 @@ typedef struct
 {
     char name[3];
     int place;
+    int round_counter;
     Direction direction;
     Status piece_status;
 } Piece;

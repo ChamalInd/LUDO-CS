@@ -108,6 +108,7 @@ void initialize_players(void)
         {
             snprintf(players[i].pieces[j].name, sizeof(players[i].pieces[j].name), "%s%i", piece_specifier, j + 1);
             players[i].pieces[j].place = BASE;
+            players[i].pieces[j].round_counter = 0;
             players[i].pieces[j].piece_status = IN_BASE;
             players[i].pieces[j].direction = CLOCKWISE;
         }
