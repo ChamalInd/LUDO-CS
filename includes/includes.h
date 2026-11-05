@@ -1,5 +1,9 @@
 #pragma once
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
+#include <algorithm>
+#include <iomanip>
 
 enum Color
 {
@@ -9,6 +13,11 @@ enum Color
 enum CellType
 {	
 	NORMAL, COLOR_SPECIFIC
+};
+
+enum NameType
+{
+	FULL_NAME, FIRST_CHAR
 };
 
 class Piece
@@ -68,7 +77,15 @@ class Board
 	private:
 		std::vector<Cell> cells;
 		std::vector<Player> players;
+		int noOfPlayers = 4;
 
 	public:
 		Board();
+
+		int getNoOfPlayers() const;
 };
+
+
+int rollDie();
+std::string convertEnumToString(Color color, NameType type);
+Color pickFirstPlayer(int noOfPlayers);

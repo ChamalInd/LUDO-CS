@@ -2,5 +2,6 @@
 
 int main()
 {
-
+	srand(time(NULL));
+	Board board;
 }
