@@ -9,9 +9,9 @@ bool Piece::movePieceAroundBoard(std::string playerName, int dieValue, int homeP
 {
 	const int totalSteps = 56;
 
-	if (currentPlace + dieValue > totalSteps) return false;
+	if (countOfCellsMoved + dieValue > totalSteps) return false;
 
-	std::cout << playerName << " moves piece " << pieceName << " from location " << currentPlace + 1; 
+	std::cout << playerName << " player moves piece " << pieceName << " from location " << currentPlace + 1; 
 
 	for (int i = 0; i < dieValue; i++)
 	{
@@ -36,6 +36,11 @@ bool Piece::movePieceAroundBoard(std::string playerName, int dieValue, int homeP
 	}
 
 	std::cout << " to " << currentPlace + 1 << " by " << dieValue << " units in " << "clockwise" << " direction." << std::endl;
+
+	if (pieceState == FINISHED)
+	{
+		std::cout << playerName << " player's piece " << pieceName << " reached Home." << std::endl;
+	}
 
 	return true;
 }
