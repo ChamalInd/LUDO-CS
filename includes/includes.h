@@ -63,9 +63,12 @@ class Player
 		std::vector<Piece> playerPieces;
 		int xMarkedCell;
 		int homePathCell;
+		int homeBeginCell;
 
 	public:
-		Player(Color& c, std::string& n, std::vector<Piece>& p, int& x, int& h) : playerColor(c), playerName(n), playerPieces(p), xMarkedCell(x), homePathCell(h) {}
+		Player(Color& c, std::string& n, std::vector<Piece>& p, int& x, int& hp, int& hb) : 
+			playerColor(c), playerName(n), playerPieces(p), 
+			xMarkedCell(x), homePathCell(hp), homeBeginCell(hb) {}
 
 		Color getPlayerColor() const;
 		std::string getPlayerName() const;
@@ -78,11 +81,16 @@ class Board
 		std::vector<Cell> cells;
 		std::vector<Player> players;
 		int noOfPlayers = 4;
+		int noOfPieces = 4; // per player
 
 	public:
 		Board();
+		
+		void insertIntoPlayersVector(Player& player);
+		void insertIntoCellsVector(Cell& cell);
 
 		int getNoOfPlayers() const;
+		int getNoOfPieces() const;
 };
 
 
