@@ -7,32 +7,30 @@ void Piece::movePieceToX(int x)
 
 bool Piece::movePieceAroundBoard(std::string playerName, int dieValue, int homePathCell, int homeBeginCell)
 {
-	if (currentPlace >= homeBeginCell)
-	{
-		if (dieValue > ((homeBeginCell + 5) - currentPlace)) return false;
-	}
+	const int totalSteps = 56;
+
+	if (currentPlace + dieValue > totalSteps) return false;
 
 	std::cout << playerName << " moves piece " << pieceName << " from location " << currentPlace + 1; 
 
 	for (int i = 0; i < dieValue; i++)
 	{
-		if (currentPlace >= homeBeginCell)
-		{
-			currentPlace = (currentPlace + 1) % 52;
-			countOfCellsMoved += 1;
-
-			if (countOfCellsMoved == 50 && currentPlace == homePathCell) 
-			{
-				currentPlace = homeBeginCell;
-			}
-		}
-		else
+		if (currentPlace >= homeBeginCell) 
 		{
 			currentPlace += 1;
 		}
+		else if (countOfCellsMoved == 50 && currentPlace == homePathCell)
+		{
+			currentPlace = homeBeginCell;
+		}
+		else
+		{
+			currentPlace = (currentPlace + 1) % 52;
+		}
+		countOfCellsMoved += 1;
 	}
 
-	if (currentPlace == homeBeginCell + 5)
+	if (countOfCellsMoved == totalSteps)
 	{
 		pieceState = FINISHED;
 	}
