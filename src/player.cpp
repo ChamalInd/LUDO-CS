@@ -1,8 +1,8 @@
 #include "../includes/includes.h"
 
-void Player::playTurn()
+bool Player::playTurn()
 {	
-	if (playerState == FINISHED) return;
+	if (playerState == FINISHED) return false;
 
 	int dieValue = rollDie();
 	std::cout << std::endl << playerName << " player rolled a " << dieValue << "." << std::endl;
@@ -29,13 +29,17 @@ void Player::playTurn()
 
 				std::cout << playerName << " player moves piece " << piece.getPieceName() << " to the starting point." << std::endl;
 				std::cout << playerName << " player now has " << noOfPieces - noOfIdlePieces << "/4 of pieces on the board and " << noOfIdlePieces << "/4 of pieces on the base." << std::endl;
-				return;
+				return true;
 			}
 		}
 		
 		if (state == PLAYING)
 		{
-			if (piece.movePieceAroundBoard(playerName, dieValue, homePathCell, homeBeginCell)) return;
+			if (piece.movePieceAroundBoard(playerName, dieValue, homePathCell, homeBeginCell))
+			{
+				if (dieValue == 6) return true;
+				else return false;
+			}
 		}
 	}
 
@@ -45,11 +49,14 @@ void Player::playTurn()
 	for (Piece piece : playerPieces)
 	{
 		if (piece.getPieceState() != FINISHED)
-			{
-				playerState = PLAYING;
-				break;
-			}
+		{
+			playerState = PLAYING;
+			break;
+		}
 	}
+
+	if (dieValue == 6) return true;
+	else return false;
 }
 
 Color Player::getPlayerColor() const

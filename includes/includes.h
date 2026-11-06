@@ -84,7 +84,7 @@ class Player
 			playerColor(c), playerName(n), playerPieces(p), 
 			xMarkedCell(x), homePathCell(hp), homeBeginCell(hb) {}
 
-		void playTurn();
+		bool playTurn();
 
 		Color getPlayerColor() const;
 		std::string getPlayerName() const;

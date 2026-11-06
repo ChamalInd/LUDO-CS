@@ -74,10 +74,20 @@ void Board::startGame()
 			}
 		}
 
-		for (Player& player : players)
+		int sixCount = 0;
+		for (int i = 0; i < noOfPlayers; i++)
 		{
-			if (player.getPlayerState() == FINISHED) continue;
-			player.playTurn();
+			if (players[i].getPlayerState() == FINISHED) continue;
+			bool isSixRolled = players[i].playTurn();
+			if (isSixRolled && sixCount < 3)
+			{
+				i--;
+				sixCount++;
+			}
+			else
+			{
+				sixCount = 0;
+			}
 		}
 	}
 }
