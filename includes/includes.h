@@ -30,13 +30,14 @@ class Piece {
 		int pieceID; 
 		std::string pieceName; 
 		int currentPlace = -1;
+		int countOfCellsMoved = 0;
 		State pieceState = IDLE;
 	
 	public:
 		Piece(int i, std::string& n) : pieceID(i), pieceName(n) {}
 		
 		void movePieceToX(int x);
-		void movePieceAroundBoard(int dieValue, int homePathCell, int homeBeginCell);
+		bool movePieceAroundBoard(std::string playerName, int dieValue, int homePathCell, int homeBeginCell);
 
 		void setPieceState(State newState);
 

@@ -39,16 +39,17 @@ void Player::playTurn()
 
 				std::cout << playerName << " player moves piece " << piece.getPieceName() << " to the starting point." << std::endl;
 				std::cout << playerName << " player now has " << noOfPieces - noOfIdlePieces << "/4 of pieces on the board and " << noOfIdlePieces << "/4 of pieces on the base." << std::endl;
-				break;
+				return;
 			}
 		}
 		
 		if (state == PLAYING)
 		{
-			piece.movePieceAroundBoard(dieValue, homePathCell, homeBeginCell);
-			break;
+			if (piece.movePieceAroundBoard(playerName, dieValue, homePathCell, homeBeginCell)) return;
 		}
 	}
+
+	std::cout << playerName << " player has no valid moves available." << std::endl;
 }
 
 Color Player::getPlayerColor() const

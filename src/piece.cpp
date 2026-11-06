@@ -5,9 +5,29 @@ void Piece::movePieceToX(int x)
 	currentPlace = x;
 }
 
-void Piece::movePieceAroundBoard(int dieValue, int homePathCell, int homeBeginCell)
+bool Piece::movePieceAroundBoard(std::string playerName, int dieValue, int homePathCell, int homeBeginCell)
 {
+	if (currentPlace >= homeBeginCell)
+	{
+		if (dieValue > ((homeBeginCell + 5) - currentPlace)) return false;
+	}
 
+	std::cout << playerName << " moves piece " << pieceName << " from location ";
+	std::cout << currentPlace + 1 << " to " << currentPlace + dieValue + 1;
+	std::cout << " by " << dieValue << " units in " << "clockwise" << " direction." << std::endl;
+
+	for (int i = 0; i < dieValue; i++)
+	{
+		currentPlace = (currentPlace + 1) % 52;
+		countOfCellsMoved += 1;
+
+		if (countOfCellsMoved == 49 && currentPlace == homePathCell)
+		{
+			currentPlace = homeBeginCell;
+		}
+	}
+
+	return true;
 }
 
 void Piece::setPieceState(State newState)
