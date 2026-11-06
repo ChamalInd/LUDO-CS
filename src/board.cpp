@@ -54,6 +54,40 @@ Board::Board()
 		Cell cell(i, type);
 		insertIntoCellsVector(cell);
 	}
+
+	// setting the game over signal.
+	setGameOverSignal(false);
+}
+
+void Board::startGame()
+{
+	std::cout << getGameOverSignal();
+	while (!getGameOverSignal())
+	{
+		std::cout << "Started";
+		// checking whether the game is over.
+		setGameOverSignal(true);
+		for (Player p : players)
+		{
+			std::vector<Piece> pieces = p.getPlayerPieces();
+			for (Piece x : pieces)
+			{
+				if (x.getPieceState() != FINISHED)
+				{
+					setGameOverSignal(false);
+					break;
+				}
+			}
+			if (!getGameOverSignal()) break;
+		}
+
+
+	}
+}
+
+void Board::setGameOverSignal(bool signal)
+{
+	gameOverSignal = signal;
 }
 
 void Board::insertIntoPlayersVector(Player& player)
@@ -79,4 +113,9 @@ int Board::getNoOfPieces() const
 int Board::getNoOfCells() const
 {
 	return noOfNormalCells + noOfColorSpecificCells;
+}
+
+bool Board::getGameOverSignal() const
+{
+	return gameOverSignal;
 }

@@ -20,13 +20,17 @@ enum NameType
 	FULL_NAME, FIRST_CHAR
 };
 
-class Piece
+enum State
 {
-	private:
-		int pieceID;
-		std::string pieceName;
+	IDLE, PLAYING, FINISHED
+}; 
+
+class Piece { 
+	private: 
+		int pieceID; 
+		std::string pieceName; 
 		int currentPlace = -1;
-		bool isRoundComplete = false;
+		State pieceState = IDLE;
 	
 	public:
 		Piece(int& i, std::string& n) : pieceID(i), pieceName(n) {}
@@ -34,8 +38,7 @@ class Piece
 		int getPieceID() const;
 		std::string getPieceName() const;
 		int getCurrentPlace() const;
-		bool getRoundCompletion() const;
-		
+		State getPieceState() const;
 };
 
 class Cell
@@ -80,6 +83,7 @@ class Board
 	private:
 		std::vector<Cell> cells;
 		std::vector<Player> players;
+		bool gameOverSignal = true;
 		int noOfPlayers = 4;
 		int noOfPieces = 4; // per player
 		int noOfNormalCells = 52;
@@ -87,13 +91,18 @@ class Board
 
 	public:
 		Board();
+
+		void startGame();
 		
 		void insertIntoPlayersVector(Player& player);
 		void insertIntoCellsVector(Cell& cell);
+		
+		void setGameOverSignal(bool signal);
 
 		int getNoOfPlayers() const;
 		int getNoOfPieces() const;
 		int getNoOfCells() const;
+		bool getGameOverSignal() const;
 };
 
 
