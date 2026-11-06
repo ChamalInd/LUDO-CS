@@ -35,7 +35,8 @@ class Piece {
 	public:
 		Piece(int i, std::string& n) : pieceID(i), pieceName(n) {}
 		
-		void movePlayerToX(int x);
+		void movePieceToX(int x);
+		void movePieceAroundBoard(int dieValue, int homePathCell, int homeBeginCell);
 
 		void setPieceState(State newState);
 
@@ -72,6 +73,8 @@ class Player
 		int homePathCell;
 		int homeBeginCell;
 		State playerState = PLAYING;
+		int noOfPieces = 4;
+		int noOfIdlePieces = 4;
 
 	public:
 		Player(Color c, std::string& n, std::vector<Piece>& p, int x, int hp, int hb) : 

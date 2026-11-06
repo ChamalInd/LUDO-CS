@@ -15,12 +15,18 @@ void Player::playTurn()
 	if (playerState == FINISHED) return;
 
 	int dieValue = rollDie();
-	std::cout << playerName << " player rolled a " << dieValue << "." << std::endl;
+	std::cout << std::endl << playerName << " player rolled a " << dieValue << "." << std::endl;
+
+	// sorting the pieces vector based on their state,
+	// so idle pieces get priority to move from the base before other player play.
+	std::sort(playerPieces.begin(), playerPieces.end(), [](const Piece& a, const Piece& b)
+	{
+		return a.getPieceState() < b.getPieceState();
+	});
 
 	for (Piece& piece : playerPieces)	
 	{
 		State state = piece.getPieceState();
-		std::cout << state << " ";
 		if (state == FINISHED) continue;
 
 		if (state == IDLE)
@@ -28,16 +34,19 @@ void Player::playTurn()
 			if (dieValue == 6)
 			{
 				piece.setPieceState(PLAYING);
-				piece.movePlayerToX(xMarkedCell);
+				piece.movePieceToX(xMarkedCell);
+				noOfIdlePieces -= 1;
 
 				std::cout << playerName << " player moves piece " << piece.getPieceName() << " to the starting point." << std::endl;
+				std::cout << playerName << " player now has " << noOfPieces - noOfIdlePieces << "/4 of pieces on the board and " << noOfIdlePieces << "/4 of pieces on the base." << std::endl;
 				break;
 			}
 		}
 		
 		if (state == PLAYING)
 		{
-			continue;
+			piece.movePieceAroundBoard(dieValue, homePathCell, homeBeginCell);
+			break;
 		}
 	}
 }

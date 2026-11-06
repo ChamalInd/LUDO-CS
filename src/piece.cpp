@@ -1,8 +1,13 @@
 #include "../includes/includes.h"
 
-void Piece::movePlayerToX(int x)
+void Piece::movePieceToX(int x)
 {
 	currentPlace = x;
+}
+
+void Piece::movePieceAroundBoard(int dieValue, int homePathCell, int homeBeginCell)
+{
+
 }
 
 void Piece::setPieceState(State newState)
