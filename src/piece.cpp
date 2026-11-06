@@ -5,13 +5,12 @@ void Piece::movePieceToX(int x)
 	currentPlace = x;
 }
 
-bool Piece::movePieceAroundBoard(std::string playerName, int dieValue, int homePathCell, int homeBeginCell)
+bool Piece::movePieceAroundBoard(std::string playerName, int dieValue, int homePathCell, int homeBeginCell, std::vector<Cell>& cells)
 {
 	const int totalSteps = 56;
+	int prevPlace = currentPlace;
 
 	if (countOfCellsMoved + dieValue > totalSteps) return false;
-
-	std::cout << playerName << " player moves piece " << pieceName << " from location " << currentPlace + 1; 
 
 	for (int i = 0; i < dieValue; i++)
 	{
@@ -30,15 +29,31 @@ bool Piece::movePieceAroundBoard(std::string playerName, int dieValue, int homeP
 		countOfCellsMoved += 1;
 	}
 
+	if (countOfCellsMoved != totalSteps && cells[currentPlace].getCellOccupent() != nullptr)
+	{
+		// ignore going into cells occupied by the same player
+		if (cells[currentPlace].getCellOccupent()->getPieceName()[0] == pieceName[0])
+		{
+			return false;
+		}
+		// capturing opponent pieces
+		else
+		{
+			Piece* occupent = cells[currentPlace].getCellOccupent();
+			occupent->setPieceState(IDLE);
+			occupent->setCurrentPlace(-1);
+			occupent->setCountOfCellsMoved(0);
+		}
+	}
+
+	cells[currentPlace].setCellOccupent(this);
+
+	std::cout << playerName << " player moves piece " << pieceName << " from location " << prevPlace + 1; 
+	std::cout << " to " << currentPlace + 1 << " by " << dieValue << " units in " << "clockwise" << " direction." << std::endl;
+	
 	if (countOfCellsMoved == totalSteps)
 	{
 		pieceState = FINISHED;
-	}
-
-	std::cout << " to " << currentPlace + 1 << " by " << dieValue << " units in " << "clockwise" << " direction." << std::endl;
-
-	if (pieceState == FINISHED)
-	{
 		std::cout << playerName << " player's piece " << pieceName << " reached Home." << std::endl;
 	}
 
@@ -48,6 +63,16 @@ bool Piece::movePieceAroundBoard(std::string playerName, int dieValue, int homeP
 void Piece::setPieceState(State newState)
 {
 	pieceState = newState;
+}
+
+void Piece::setCurrentPlace(int newPlace)
+{
+	currentPlace = newPlace;
+}
+		
+void Piece::setCountOfCellsMoved(int newCount)
+{
+	countOfCellsMoved = newCount;
 }
 
 int Piece::getPieceID() const

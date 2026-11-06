@@ -1,12 +1,7 @@
 #include "../includes/includes.h"
 
-bool Player::playTurn()
+bool Player::playTurn(int dieValue, std::vector<Cell>& cells)
 {	
-	if (playerState == FINISHED) return false;
-
-	int dieValue = rollDie();
-	std::cout << std::endl << playerName << " player rolled a " << dieValue << "." << std::endl;
-
 	// sorting the pieces vector based on their state,
 	// so idle pieces get priority to move from the base before other player play.
 	std::sort(playerPieces.begin(), playerPieces.end(), [](const Piece& a, const Piece& b)
@@ -35,7 +30,7 @@ bool Player::playTurn()
 		
 		if (state == PLAYING)
 		{
-			if (piece.movePieceAroundBoard(playerName, dieValue, homePathCell, homeBeginCell))
+			if (piece.movePieceAroundBoard(playerName, dieValue, homePathCell, homeBeginCell, cells))
 			{
 				if (dieValue == 6) return true;
 				else return false;

@@ -78,7 +78,11 @@ void Board::startGame()
 		for (int i = 0; i < noOfPlayers; i++)
 		{
 			if (players[i].getPlayerState() == FINISHED) continue;
-			bool isSixRolled = players[i].playTurn();
+			
+			int dieValue = rollDie();
+			std::cout << std::endl << players[i].getPlayerName() << " player rolled a " << dieValue << "." << std::endl;
+
+			bool isSixRolled = players[i].playTurn(dieValue, cells);
 			if (isSixRolled && sixCount < 3)
 			{
 				i--;

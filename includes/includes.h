@@ -27,6 +27,11 @@ enum State
 	IDLE, PLAYING, FINISHED
 }; 
 
+class Piece;
+class Player;
+class Cell;
+class Board;
+
 class Piece { 
 	private: 
 		int pieceID; 
@@ -39,9 +44,11 @@ class Piece {
 		Piece(int i, std::string& n) : pieceID(i), pieceName(n) {}
 		
 		void movePieceToX(int x);
-		bool movePieceAroundBoard(std::string playerName, int dieValue, int homePathCell, int homeBeginCell);
+		bool movePieceAroundBoard(std::string playerName, int dieValue, int homePathCell, int homeBeginCell, std::vector<Cell>& cells);
 
 		void setPieceState(State newState);
+		void setCurrentPlace(int newPlace);
+		void setCountOfCellsMoved(int newCount);
 
 		int getPieceID() const;
 		std::string getPieceName() const;
@@ -54,16 +61,16 @@ class Cell
 	private:
 		int cellID;
 		CellType cellType;
-		bool cellPermision = false;
+		Piece* cellOccupent = nullptr;
 	
 	public:
 		Cell(int i, CellType& c) : cellID(i), cellType(c) {}
 
-		void setCellPermission(Piece& piece);
+		void setCellOccupent(Piece* piece);
 
 		int getCellID() const;
 		CellType getCellType() const;
-		bool getCellPermission() const;
+		Piece* getCellOccupent() const;
 };
 
 class Player
@@ -84,7 +91,7 @@ class Player
 			playerColor(c), playerName(n), playerPieces(p), 
 			xMarkedCell(x), homePathCell(hp), homeBeginCell(hb) {}
 
-		bool playTurn();
+		bool playTurn(int dieValue, std::vector<Cell>& cells);
 
 		Color getPlayerColor() const;
 		std::string getPlayerName() const;
