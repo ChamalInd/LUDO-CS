@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <algorithm>
 #include <iomanip>
+#include <string>
+#include <vector>
 
 enum Color
 {

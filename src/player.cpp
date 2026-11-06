@@ -2,16 +2,6 @@
 
 void Player::playTurn()
 {	
-	playerState = FINISHED;
-	for (Piece piece : playerPieces)
-	{
-		if (piece.getPieceState() != FINISHED)
-			{
-				playerState = PLAYING;
-				break;
-			}
-	}
-
 	if (playerState == FINISHED) return;
 
 	int dieValue = rollDie();
@@ -21,7 +11,7 @@ void Player::playTurn()
 	// so idle pieces get priority to move from the base before other player play.
 	std::sort(playerPieces.begin(), playerPieces.end(), [](const Piece& a, const Piece& b)
 	{
-		return a.getPieceState() < b.getPieceState();
+		return a.getPieceState() < b.getPieceState() && a.getCurrentPlace() > b.getCurrentPlace();
 	});
 
 	for (Piece& piece : playerPieces)	
@@ -50,6 +40,16 @@ void Player::playTurn()
 	}
 
 	std::cout << playerName << " player has no valid moves available." << std::endl;
+
+	playerState = FINISHED;
+	for (Piece piece : playerPieces)
+	{
+		if (piece.getPieceState() != FINISHED)
+			{
+				playerState = PLAYING;
+				break;
+			}
+	}
 }
 
 Color Player::getPlayerColor() const
