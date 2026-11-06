@@ -1,5 +1,15 @@
 #include "../includes/includes.h"
 
+void Piece::movePlayerToX(int x)
+{
+	currentPlace = x;
+}
+
+void Piece::setPieceState(State newState)
+{
+	pieceState = newState;
+}
+
 int Piece::getPieceID() const
 {
 	return pieceID;

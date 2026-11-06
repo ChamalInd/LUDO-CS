@@ -33,7 +33,11 @@ class Piece {
 		State pieceState = IDLE;
 	
 	public:
-		Piece(int& i, std::string& n) : pieceID(i), pieceName(n) {}
+		Piece(int i, std::string& n) : pieceID(i), pieceName(n) {}
+		
+		void movePlayerToX(int x);
+
+		void setPieceState(State newState);
 
 		int getPieceID() const;
 		std::string getPieceName() const;
@@ -49,7 +53,7 @@ class Cell
 		bool cellPermision = false;
 	
 	public:
-		Cell(int& i, CellType& c) : cellID(i), cellType(c) {}
+		Cell(int i, CellType& c) : cellID(i), cellType(c) {}
 
 		void setCellPermission(Piece& piece);
 
@@ -67,15 +71,19 @@ class Player
 		int xMarkedCell;
 		int homePathCell;
 		int homeBeginCell;
+		State playerState = PLAYING;
 
 	public:
-		Player(Color& c, std::string& n, std::vector<Piece>& p, int& x, int& hp, int& hb) : 
+		Player(Color c, std::string& n, std::vector<Piece>& p, int x, int hp, int hb) : 
 			playerColor(c), playerName(n), playerPieces(p), 
 			xMarkedCell(x), homePathCell(hp), homeBeginCell(hb) {}
+
+		void playTurn();
 
 		Color getPlayerColor() const;
 		std::string getPlayerName() const;
 		std::vector<Piece> getPlayerPieces() const;
+		State getPlayerState() const;
 };
 
 class Board

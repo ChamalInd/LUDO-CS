@@ -61,27 +61,24 @@ Board::Board()
 
 void Board::startGame()
 {
-	std::cout << getGameOverSignal();
 	while (!getGameOverSignal())
 	{
-		std::cout << "Started";
 		// checking whether the game is over.
 		setGameOverSignal(true);
-		for (Player p : players)
+		for (Player player : players)
 		{
-			std::vector<Piece> pieces = p.getPlayerPieces();
-			for (Piece x : pieces)
+			if (player.getPlayerState() != FINISHED) 
 			{
-				if (x.getPieceState() != FINISHED)
-				{
-					setGameOverSignal(false);
-					break;
-				}
+				setGameOverSignal(false);
+				break;
 			}
-			if (!getGameOverSignal()) break;
 		}
 
-
+		for (Player& player : players)
+		{
+			if (player.getPlayerState() == FINISHED) continue;
+			player.playTurn();
+		}
 	}
 }
 
