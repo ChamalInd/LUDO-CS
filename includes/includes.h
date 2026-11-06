@@ -82,6 +82,8 @@ class Board
 		std::vector<Player> players;
 		int noOfPlayers = 4;
 		int noOfPieces = 4; // per player
+		int noOfNormalCells = 52;
+		int noOfColorSpecificCells = 20;
 
 	public:
 		Board();
@@ -91,6 +93,7 @@ class Board
 
 		int getNoOfPlayers() const;
 		int getNoOfPieces() const;
+		int getNoOfCells() const;
 };
 
 

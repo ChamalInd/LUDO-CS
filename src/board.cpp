@@ -47,6 +47,13 @@ Board::Board()
 	std::cout << "." << std::endl; 
 
 	// setting up the board.
+	for (int i = 0; i < getNoOfCells(); i++)
+	{
+		CellType type = NORMAL;
+		if (i / 52) type = COLOR_SPECIFIC;
+		Cell cell(i, type);
+		insertIntoCellsVector(cell);
+	}
 }
 
 void Board::insertIntoPlayersVector(Player& player)
@@ -67,4 +74,9 @@ int Board::getNoOfPlayers() const
 int Board::getNoOfPieces() const
 {
 	return noOfPieces;
+}
+
+int Board::getNoOfCells() const
+{
+	return noOfNormalCells + noOfColorSpecificCells;
 }
