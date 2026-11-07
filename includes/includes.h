@@ -28,6 +28,8 @@ class Piece;
 class Board;
 class Cell;
 
+int rollDie();
+std::string convertColorToString(Color color, NameType type);
 
 class GameManager
 {
@@ -47,7 +49,7 @@ class Board
 		std::vector<Cell> cells;
 	
 	public:
-		Board(std::vector<Cell>& c) : cells(c) {}
+		Board();
 
 		bool checkCellValidity(int cellID);
 };
@@ -82,8 +84,6 @@ class Player
 	public:
 		Player(Color c, std::string n, int x, int hp, int hb, State s);
 		
-		void setPlayerPieces(std::vector<Piece>& newPieces);
-
 		Color getPlayerColor() const;
 		std::string getPlayerName() const;
 		int getPieceCount() const;
@@ -92,19 +92,18 @@ class Player
 		void decidePlayerTurn(int diceValue);
 };
 
-class Piece : public Player
+class Piece
 {
 	private:
 		std::string pieceID;
-		std::string pieceName;
+		Player* owner = nullptr;
 		int stepCount = 0;
 		int pieceLocation = -1;
 	
 	public:
-		Piece(Player& owner, std::string ID, std::string n) : Player(owner), pieceID(ID), pieceName(n) {}
+		Piece(std::string ID, Player* o) : pieceID(ID), owner(o) {}
 
 		std::string getPieceID() const;
-		std::string getPieceName() const;
 		int getStepCount() const;
 		int getPieceLocation() const;
 
