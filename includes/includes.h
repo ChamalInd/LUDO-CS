@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+// enumerations
 enum Color
 {
 	RED, GREEN, YELLOW, BLUE
@@ -22,27 +23,19 @@ enum State
 	IDLE, PLAYING, FINISHED
 }; 
 
-class GameManager;
+// forward class declarations
 class Player;
 class Piece;
 class Board;
 class Cell;
 
+// helper function prototypes
 int rollDie();
 std::string convertColorToString(Color color, NameType type);
+Color pickFirstPlayer(int noOfPlayers);
 
-class GameManager
-{
-	private:
-		std::vector<Player> players;
-	
-	public:
-		GameManager();
 
-		void initializeGame();
-		void gameLoop();
-};
-
+// class declarations
 class Board
 {
 	private:
@@ -108,5 +101,17 @@ class Piece
 		int getPieceLocation() const;
 
 		void movePiece(int diceValue);
+};
+
+class GameManager
+{
+	private:
+		std::vector<Player> players;
+		Board gameBoard;
+	
+	public:
+		GameManager();
+
+		void gameLoop();
 };
 
