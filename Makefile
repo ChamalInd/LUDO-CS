@@ -3,6 +3,7 @@ CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic -O2
 
 TARGET := ludo
 BUILD  := build
+LOG := output.log
 
 SRCS := $(wildcard src/*.cpp)
 OBJS := $(SRCS:%.cpp=$(BUILD)/%.o)
@@ -20,6 +21,6 @@ $(BUILD)/%.o: %.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 clean:
-	rm -rf $(BUILD) $(TARGET)
+	rm -rf $(BUILD) $(TARGET) $(LOG)
 
 -include $(DEPS)
